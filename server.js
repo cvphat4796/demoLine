@@ -2,6 +2,7 @@ const express = require('express')
 const middleware = require('@line/bot-sdk').middleware
 const JSONParseError = require('@line/bot-sdk').JSONParseError
 const SignatureValidationFailed = require('@line/bot-sdk').SignatureValidationFailed
+const bodyParser = require('body-parser')
 
 const app = express();
 let logs = [];
@@ -11,10 +12,11 @@ const config = {
   channelSecret: '1078b60e709428299135cee602e32864'
 }
 
-app.use(middleware(config))
 
-app.post('/webhook', (req, res) => {
+app.use(bodyParser.json())
+app.post('/webhook', middleware(config), (req, res) => {
     logs.push(req.body.events)
+    console.log(req.body.events)
   res.json(req.body.events) // req.body will be webhook event object
 })
 
@@ -22,15 +24,17 @@ app.get('/log', (req, res) => {
   res.json(logs) // req.body will be webhook event object
 })
 
-app.use((err, req, res, next) => {
-  if (err instanceof SignatureValidationFailed) {
-    res.status(401).send(err.signature)
-    return
-  } else if (err instanceof JSONParseError) {
-    res.status(400).send(err.raw)
-    return
-  }
-  next(err) // will throw default 500
-})
+// app.use((err, req, res, next) => {
+//   if (err instanceof SignatureValidationFailed) {
+//     res.status(401).send(err.signature)
+//     return
+//   } else if (err instanceof JSONParseError) {
+//     res.status(400).send(err.raw)
+//     return
+//   }
+//   next(err) // will throw default 500
+// })
 
-app.listen(8080)
+app.listen(3000, function(){
+    console.log("started")
+})
