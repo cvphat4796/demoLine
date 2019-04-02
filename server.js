@@ -20,7 +20,7 @@ app.route('/')
     app.route('/')
     .post(function(req, res){
  
-        objectArray.push("get: " + util.inspect(req.params) + "\n"); 
+        objectArray.push("post: " + util.inspect(req.body) + "\n"); 
         res.sendStatus(200);
     });
     app.route('/log')
