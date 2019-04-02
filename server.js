@@ -20,6 +20,7 @@ app.route('/')
     .post(function(req, res){
  
         objectArray.push("post: " + JSON.stringify(req.body) + "\n"); 
+        objectArray.push("post: " + JSON.stringify(req.headers) + "\n"); 
         res.sendStatus(200);
     });
     app.route('/log')
