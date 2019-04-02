@@ -12,13 +12,13 @@ var util = require('util');
 app.route('/')
     .get(function(req, res){
  
-        fs.appendFileSync("logs/log.txt", "get: " + util.inspect(req.params) + "\n"); 
+        fs.appendFileSync("log.txt", "get: " + util.inspect(req.params) + "\n"); 
         res.sendStatus(200);
     });
     app.route('/')
     .post(function(req, res){
  
-        fs.appendFileSync("logs/log.txt",  "post: " + util.inspect(req.body) + "\n"); 
+        fs.appendFileSync("log.txt",  "post: " + util.inspect(req.body) + "\n"); 
         res.sendStatus(200);
     });
     app.route('/log')
