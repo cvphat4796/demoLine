@@ -17,7 +17,7 @@ const config = {
 app.post('/webhook', middleware(config), (req, res) => {
     logs.push("post: " + JSON.stringify(req.body) + "\n"); 
     logs.push("post: " + JSON.stringify(req.headers) + "\n"); 
-    res.status(200) // req.body will be webhook event object
+    res.send(200) // req.body will be webhook event object
 })
 
 app.use(bodyParser.json());
@@ -26,16 +26,16 @@ app.get('/log', (req, res) => {
   res.json(logs) // req.body will be webhook event object
 })
 
-// app.use((err, req, res, next) => {
-//   if (err instanceof SignatureValidationFailed) {
-//     res.status(401).send(err.signature)
-//     return
-//   } else if (err instanceof JSONParseError) {
-//     res.status(400).send(err.raw)
-//     return
-//   }
-//   next(err) // will throw default 500
-// })
+app.use((err, req, res, next) => {
+  if (err instanceof SignatureValidationFailed) {
+    res.sendStatus(401).send(err.signature)
+    return
+  } else if (err instanceof JSONParseError) {
+    res.sendStatus(400).send(err.raw)
+    return
+  }
+  next(err) // will throw default 500
+})
 
 app.listen(port, function(){
     console.log("started")
