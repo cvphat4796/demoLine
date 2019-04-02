@@ -15,8 +15,7 @@ const config = {
 
 
 app.post('/webhook', middleware(config), (req, res) => {
-    logs.push(req.body.events)
-    objectArray.push("post: " + JSON.stringify(req.body) + "\n"); 
+    logs.push("post: " + JSON.stringify(req.body) + "\n"); 
     res.send(200) // req.body will be webhook event object
 })
 
