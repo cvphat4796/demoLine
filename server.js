@@ -14,12 +14,13 @@ const config = {
 }
 
 
-app.use(bodyParser.json())
 app.post('/webhook', middleware(config), (req, res) => {
     logs.push(req.body.events)
     objectArray.push("post: " + JSON.stringify(req.body) + "\n"); 
     res.send(200) // req.body will be webhook event object
 })
+
+app.use(bodyParser.json());
 
 app.get('/log', (req, res) => {
   res.json(logs) // req.body will be webhook event object
