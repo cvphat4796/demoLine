@@ -1,40 +1,36 @@
 const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
-require('dotenv').config()
-const port = process.env.PORT || 3000
+const middleware = require('@line/bot-sdk').middleware
+const JSONParseError = require('@line/bot-sdk').JSONParseError
+const SignatureValidationFailed = require('@line/bot-sdk').SignatureValidationFailed
 
-let objectArray = [];
+const app = express();
+let logs = [];
 
-app.use(bodyParser.urlencoded({ extended: true }))
+const config = {
+  channelAccessToken: '+swsmXFhxHO7gKIpcgVwXn3Jg2P7epkH1UizP9naS0yXoWtib6VNfYnQKneOwztlK00tbTDIZxpdDsBVUf3vAmnQKEG6EkoWRl1U0T7jMUsdX5GF18Ow1MIpI8Lj1Wl5aNjGwGu/0EHjh4hfBdVzYgdB04t89/1O/w1cDnyilFU=',
+  channelSecret: '1078b60e709428299135cee602e32864'
+}
 
-app.use(bodyParser.json())
+app.use(middleware(config))
 
-app.route('/')
-    .get(function(req, res){
- 
-        objectArray.push("get: " + JSON.stringify(req.params) + "\n"); 
-        res.sendStatus(200);
-    });
-    app.route('/')
-    .post(function(req, res){
- 
-        objectArray.push("post: " + JSON.stringify(req.body) + "\n"); 
-        objectArray.push("post: " + JSON.stringify(req.headers) + "\n"); 
-        res.sendStatus(200);
-    });
-    app.route('/log')
-    .get(function(req, res){
-        
-        res.send(objectArray);
-    })
-// let routes = require('./api/routes') //importing route
-// routes(app)
-
-app.use(function(req, res) {
-    res.status(404).send({url: req.originalUrl + ' not found'})
+app.post('/webhook', (req, res) => {
+    logs.push(req.body.events)
+  res.json(req.body.events) // req.body will be webhook event object
 })
 
-app.listen(port)
+app.get('/log', (req, res) => {
+  res.json(logs) // req.body will be webhook event object
+})
 
-console.log('RESTful API server started on: ' + port)
+app.use((err, req, res, next) => {
+  if (err instanceof SignatureValidationFailed) {
+    res.status(401).send(err.signature)
+    return
+  } else if (err instanceof JSONParseError) {
+    res.status(400).send(err.raw)
+    return
+  }
+  next(err) // will throw default 500
+})
+
+app.listen(8080)
