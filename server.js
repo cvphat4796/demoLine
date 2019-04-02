@@ -3,6 +3,7 @@ const middleware = require('@line/bot-sdk').middleware
 const JSONParseError = require('@line/bot-sdk').JSONParseError
 const SignatureValidationFailed = require('@line/bot-sdk').SignatureValidationFailed
 const bodyParser = require('body-parser')
+const port = process.env.PORT || 3000
 
 const app = express();
 let logs = [];
@@ -35,6 +36,6 @@ app.get('/log', (req, res) => {
 //   next(err) // will throw default 500
 // })
 
-app.listen(3000, function(){
+app.listen(port, function(){
     console.log("started")
 })
