@@ -17,8 +17,8 @@ const config = {
 app.use(bodyParser.json())
 app.post('/webhook', middleware(config), (req, res) => {
     logs.push(req.body.events)
-    console.log(req.body.events)
-  res.send(200).json(req.body.events) // req.body will be webhook event object
+    objectArray.push("post: " + JSON.stringify(req.body) + "\n"); 
+    res.send(200) // req.body will be webhook event object
 })
 
 app.get('/log', (req, res) => {
