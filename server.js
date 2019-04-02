@@ -9,18 +9,17 @@ let objectArray = [];
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(bodyParser.json())
-const fs = require('fs');
-var util = require('util');
+
 app.route('/')
     .get(function(req, res){
  
-        objectArray.push("get: " + util.inspect(req.params) + "\n"); 
+        objectArray.push("get: " + JSON.stringify(req.params) + "\n"); 
         res.sendStatus(200);
     });
     app.route('/')
     .post(function(req, res){
  
-        objectArray.push("post: " + util.inspect(req.body) + "\n"); 
+        objectArray.push("post: " + JSON.stringify(req.body) + "\n"); 
         res.sendStatus(200);
     });
     app.route('/log')
