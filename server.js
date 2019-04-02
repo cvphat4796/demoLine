@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 require('dotenv').config()
 const port = process.env.PORT || 3000
 
+let objectArray = [];
+
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(bodyParser.json())
@@ -12,20 +14,19 @@ var util = require('util');
 app.route('/')
     .get(function(req, res){
  
-        fs.appendFileSync("log.txt", "get: " + util.inspect(req.params) + "\n"); 
+        objectArray.push("get: " + util.inspect(req.params) + "\n"); 
         res.sendStatus(200);
     });
     app.route('/')
     .post(function(req, res){
  
-        fs.appendFileSync("log.txt",  "post: " + util.inspect(req.body) + "\n"); 
+        objectArray.push("get: " + util.inspect(req.params) + "\n"); 
         res.sendStatus(200);
     });
     app.route('/log')
     .get(function(req, res){
         
-        const file = fs.createWriteStream("/logs/log.txt");
-        response.pipe(file);
+        res.send(objectArray);
     })
 // let routes = require('./api/routes') //importing route
 // routes(app)
