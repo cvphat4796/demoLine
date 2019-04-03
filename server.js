@@ -22,7 +22,10 @@ app.post('/webhook', middleware(config), (req, res) => {
 })
 
 app.post('/webhook-zoho',  (req, res) => {
-    console.log(req.body)
+    console.log('=============body===========');
+    console.log(req.body);
+    console.log('=============headers===========');
+    console.log(req.headers);
     res.send(200) // req.body will be webhook event object
 })
 
