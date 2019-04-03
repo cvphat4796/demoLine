@@ -21,9 +21,17 @@ app.post('/webhook', middleware(config), (req, res) => {
     res.send(200) // req.body will be webhook event object
 })
 
+const url = require('url');
+
+app.get('/test', (req, res) => {
+    var url_parts = url.parse(req.url, true);
+    console.log(url_parts.query);
+})
+
 app.get('/webhook-zoho',  (req, res) => {
     console.log('=============params===========');
-    console.log(req.params);
+    var url_parts = url.parse(req.url, true);
+    console.log(url_parts.query);
     console.log('=============headers===========');
     console.log(req.headers);
     res.send(200) // req.body will be webhook event object
